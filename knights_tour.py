@@ -28,13 +28,13 @@ class KnightsTour:
                 board.insert_vertex((i, j))
 
         # Setup edges for valid knight moves
-        vertices = board.vertices()
-        for position in vertices:
-            for other in vertices:
-                if not board.get_edge(position, other):
+        vertices = list(board.vertices())
+        for i in range(len(vertices)):
+            for j in range(i+1, len(vertices)):
+                position, other = vertices[i], vertices[j]
 
-                    if self.valid_move(position.element(), other.element()):
-                        board.insert_edge(position, other)
+                if self.valid_move(position.element(), other.element()):
+                    board.insert_edge(position, other)
 
         return board
     
