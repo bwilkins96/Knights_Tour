@@ -9,8 +9,9 @@ from stack import Stack
 
 class KnightsTour:
     def __init__(self, dimensions=(8,8)):
-        self._board = self._setup_board(dimensions)
+        self._dimensions = dimensions
         self._num_spaces = dimensions[0] * dimensions[1]
+        self._board = self._setup_board()
 
     def get_position(self, tup):
         return self._board.get_vertex(tup)
@@ -24,12 +25,12 @@ class KnightsTour:
         change = self.get_change(start, end)
         return change == (1, 2) or change == (2, 1)
 
-    def _setup_board(self, dimensions):
+    def _setup_board(self):
         board = Graph()
 
         # Setup vertices for chess board in the form of (row, column) 
-        for i in range(1, dimensions[0]+1):
-            for j in range(1, dimensions[1]+1):
+        for i in range(1, self._dimensions[0]+1):
+            for j in range(1, self._dimensions[1]+1):
                 board.insert_vertex((i, j))
 
         # Setup edges for valid knight moves
@@ -44,25 +45,49 @@ class KnightsTour:
         return board
     
     def tour(self, start):
-        visited = set()
-        visited.add(start)
+        visited = {start: None}
         path = []
         
         stack = Stack()
         stack.push(start)
-    
+
+        new = 0
         while stack.size() > 0:
             current = stack.pop()
             path.append(current)
+            print(len(path))
+            #print()
 
             for edge in self._board.incident_edges(current):
                 other = edge.opposite(current)
 
                 if other not in visited:
-                    visited.add(other)
+                    visited[other] = edge
                     stack.push(other)
+                    new += 1
+
+            if new == 0:
+                if len(path) < self._num_spaces:
+                    path = self._backtrack(visited, path, stack)
+            else:
+                new = 0
 
         return path
+    
+    def _backtrack(self, visited, path, stack):
+        print('\nbacktracking!\n')
+
+        next = stack.top()
+        parent = visited[next].opposite(next)
+        parent_idx = path.index(parent)
+
+        undo_path = path[parent_idx+1:]
+        for vert in undo_path:
+            del visited[vert]
+
+        new_path = path[:parent_idx+1]
+        return new_path
+
     
 if __name__ == '__main__':
     tour = KnightsTour()
