@@ -128,7 +128,20 @@ class Graph:
             
             level = next_level
         
-        return visited  
+        return visited 
+
+    def _DFS(self, vert, visited):
+        for edge in self.incident_edges(vert):
+            other_vert = edge.opposite(vert)
+
+            if other_vert not in visited:
+                visited[other_vert] = edge
+                self._DFS(other_vert, visited) 
+
+    def DFS(self, vert):
+        visited = {vert: None}
+        self._DFS(vert, visited)
+        return visited
 
     def get_path(self, origin, dest, visited):
         """
@@ -177,11 +190,14 @@ if __name__ == '__main__':
         test.insert_edge(points[0], points[1])
 
     visited = test.BFS(a)
-    print(test.get_path(a, i, visited))      # -> [< a >, < d >, < h >, < i >]
-    print(test.get_path(a, e, visited))      # -> [< a >, < e >]
+    print(test.get_path(a, i, visited))             # -> [< a >, < d >, < h >, < i >]
+    print(test.get_path(a, e, visited))             # -> [< a >, < e >]
     print()
-    print(test.get_shortest_path(a, i))      # -> [< a >, < d >, < h >, < i >]
-    print(test.get_shortest_path(a, e))      # -> [< a >, < e >]
-    print(test.get_shortest_path(f, d))      # -> [< f >, < h >, <d>]
+    print(test.get_shortest_path(a, i))             # -> [< a >, < d >, < h >, < i >]
+    print(test.get_shortest_path(a, e))             # -> [< a >, < e >]
+    print(test.get_shortest_path(f, d))             # -> [< f >, < h >, <d>]
+
+    visited_dfs = test.DFS(a)
+    print('\n', test.get_path(a, i, visited_dfs))   # ->  [< a >, < b >, < c >, < f >, < h >, < i >]
 
 
