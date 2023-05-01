@@ -27,7 +27,21 @@ class KnightsTour:
             for j in range(1, dimensions[1]+1):
                 board.insert_vertex((i, j))
 
+        # Setup edges for valid knight moves
+        vertices = board.vertices()
+        for position in vertices:
+            for other in vertices:
+                if not board.get_edge(position, other):
+
+                    if self.valid_move(position.element(), other.element()):
+                        board.insert_edge(position, other)
+
         return board
     
 if __name__ == '__main__':
-    print(KnightsTour()._board.vertices())
+    tour = KnightsTour()
+    print(tour._board.vertices())
+    print(len(tour._board.vertices()))
+    print()
+    print(tour._board.edges())
+    print(len(tour._board.edges()))
