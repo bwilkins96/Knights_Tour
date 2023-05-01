@@ -168,7 +168,7 @@ class Graph:
         visited = self.BFS(origin)
         shortest = self.get_path(origin, dest, visited)
         return shortest
-
+    
 
 if __name__ == '__main__':
     test = Graph()

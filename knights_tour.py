@@ -5,10 +5,15 @@
 # Knight's tour
 
 from graph import Graph
+from stack import Stack
 
 class KnightsTour:
     def __init__(self, dimensions=(8,8)):
         self._board = self._setup_board(dimensions)
+        self._num_spaces = dimensions[0] * dimensions[1]
+
+    def get_position(self, tup):
+        return self._board.get_vertex(tup)
 
     def get_change(self, start, end):
         row_change = abs(start[0] - end[0])
@@ -38,10 +43,30 @@ class KnightsTour:
 
         return board
     
+    def tour(self, start):
+        visited = set()
+        visited.add(start)
+        path = []
+        
+        stack = Stack()
+        stack.push(start)
+    
+        while stack.size() > 0:
+            current = stack.pop()
+            path.append(current)
+
+            for edge in self._board.incident_edges(current):
+                other = edge.opposite(current)
+
+                if other not in visited:
+                    visited.add(other)
+                    stack.push(other)
+
+        return path
+    
 if __name__ == '__main__':
     tour = KnightsTour()
-    print(tour._board.vertices())
-    print(len(tour._board.vertices()))
-    print()
-    print(tour._board.edges())
-    print(len(tour._board.edges()))
+    start = tour.get_position((1,1))
+    tour = tour.tour(start)
+    print(tour)
+    print(len(tour))
