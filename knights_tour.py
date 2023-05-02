@@ -122,7 +122,7 @@ class KnightsTour:
             while i < len(neighbors) and not self._tour_done(path):
                 vert = neighbors[i]
                 if vert not in visited:
-                    done = self.tour_alt(vert, path, visited)
+                    self.tour_alt(vert, path, visited)
                 
                 i += 1
 
@@ -144,19 +144,26 @@ class KnightsTour:
             result_board[ele[0]-1][ele[1]-1] = count
             count += 1
 
-        for row in result_board:
-            print(row)
+        for i in range(len(result_board)-1, -1, -1):
+            print(result_board[i])
+
+    def execute(self, coords):
+        start = self.get_position(coords)
+        tour_path = self.tour_alt(start)
+        self.print_tour(tour_path)
     
 if __name__ == '__main__':
     test = KnightsTour()
-    start = test.get_position((1,1))
-    #tour = tour.tour(start)
-    #print(tour)
-    #print(len(tour))
+    test.execute((1,1))
 
-    # s = time()
-    tour = test.tour_alt(start)
-    test.print_tour(tour)
+    # start = test.get_position((1,1))
+    # #tour = tour.tour(start)
+    # #print(tour)
+    # #print(len(tour))
+
+    # # s = time()
+    # tour = test.tour_alt(start)
+    # test.print_tour(tour)
     # e = time()
 
     # print('Finished in', e-s, 'seconds')
