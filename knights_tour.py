@@ -47,7 +47,7 @@ class KnightsTour:
     def _tour_done(self, path):
         return len(path) == self._num_spaces
     
-    def _heuristic(self, vert, visited):
+    def _less_moves_heur(self, vert, visited):
         # Warnsdorff’s algorithm
 
         result = []
@@ -67,18 +67,18 @@ class KnightsTour:
     def _sort_helper(self, tup):
         return tup[1]
 
-    def tour_alt(self, current, path=[], visited=set()):
+    def tour(self, current, path=[], visited=set()):
         visited.add(current)
         path.append(current)
 
-        if len(path) < self._num_spaces:
-            neighbors = self._heuristic(current, visited)
+        if not self._tour_done(path):
+            neighbors = self._less_moves_heur(current, visited)
             i = 0
 
             while i < len(neighbors) and not self._tour_done(path):
                 vert = neighbors[i]
                 if vert not in visited:
-                    self.tour_alt(vert, path, visited)
+                    self.tour(vert, path, visited)
                 
                 i += 1
 
@@ -105,9 +105,32 @@ class KnightsTour:
 
     def execute(self, coords):
         start = self.get_position(coords)
-        tour_path = self.tour_alt(start)
+        
+        s = time()
+        tour_path = self.tour(start)
+        e = time()
+
+        print()
         self.print_tour(tour_path)
+        print('\ncompleted in', e-s, 'seconds')
     
 if __name__ == '__main__':
     test = KnightsTour()
     test.execute((1,1))
+
+    # s = time()
+    # path = test.tour(test.get_position((1,1)))
+    # e = time()
+
+    # print('\ncompleted in', e-s, 'seconds')
+
+    # for i in range(len(path)-1):
+    #     if not test.valid_move(path[i].element(), path[i+1].element()):
+    #         print('invalid move!')
+    
+    # for vert in path:
+    #     if path.count(vert) > 1:
+    #         print('More than 1!')
+
+    # if len(path) != test._num_spaces:
+    #     print(len(path))
