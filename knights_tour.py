@@ -132,6 +132,21 @@ class KnightsTour:
         
         return path
     
+    def print_tour(self, path):
+        result_board = []
+        for i in range(self._dimensions[0]):
+            row = [None for j in range(self._dimensions[1])]
+            result_board.append(row)
+
+        count = 1
+        for vert in path:
+            ele = vert.element()
+            result_board[ele[0]-1][ele[1]-1] = count
+            count += 1
+
+        for row in result_board:
+            print(row)
+    
 if __name__ == '__main__':
     test = KnightsTour()
     start = test.get_position((1,1))
@@ -139,18 +154,19 @@ if __name__ == '__main__':
     #print(tour)
     #print(len(tour))
 
-    s = time()
+    # s = time()
     tour = test.tour_alt(start)
-    e = time()
+    test.print_tour(tour)
+    # e = time()
 
-    print('Finished in', e-s, 'seconds')
-    print('\n', tour)
-    print(len(tour), '\n')
+    # print('Finished in', e-s, 'seconds')
+    # print('\n', tour)
+    # print(len(tour), '\n')
 
-    for vert in tour:
-        if tour.count(vert) > 1:
-            print('Count greater than 1!')
+    # for vert in tour:
+    #     if tour.count(vert) > 1:
+    #         print('Count greater than 1!')
 
-    for i in range(len(tour)-1):
-        if not test.valid_move(tour[i].element(), tour[i+1].element()):
-            print('invalid move!')
+    # for i in range(len(tour)-1):
+    #     if not test.valid_move(tour[i].element(), tour[i+1].element()):
+    #         print('invalid move!')
