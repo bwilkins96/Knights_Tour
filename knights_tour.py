@@ -86,11 +86,36 @@ class KnightsTour:
 
         new_path = path[:parent_idx+1]
         return new_path
+    
+    def tour_alt(self, current, path=[], visited=set()):
+        visited.add(current)
+        path.append(current)
 
+        if len(path) < self._num_spaces:
+            neighbors = list(self._board.neighbors(current))
+            done = False
+            i = 0
+
+            while i < len(neighbors) and not done:
+                vert = neighbors[i]
+                if vert not in visited:
+                    done = self.tour_alt(vert, path, visited)
+                
+                i += 1
+
+            if not done:
+                path.pop()
+                visited.remove(current) 
+        else:
+            done = True
+        
+        return done
     
 if __name__ == '__main__':
     tour = KnightsTour()
     start = tour.get_position((1,1))
-    tour = tour.tour(start)
-    print(tour)
-    print(len(tour))
+    #tour = tour.tour(start)
+    #print(tour)
+    #print(len(tour))
+
+    print(tour.tour_alt(start))

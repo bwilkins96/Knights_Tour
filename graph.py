@@ -85,15 +85,11 @@ class Graph:
     
     def incident_edges(self, vert, outgoing=True):
         edges = self._outgoing if outgoing else self._incoming
-
-        for e in edges[vert].values():
-            yield e
+        return edges[vert].values()
 
     def neighbors(self, vert, outgoing=True):
         edges = self._outgoing if outgoing else self._incoming
-
-        for v in edges[vert].keys():
-            yield v
+        return edges[vert].keys()
 
     def insert_vertex(self, ele):
         """Sets up, inserts, and returns a Vertex"""
