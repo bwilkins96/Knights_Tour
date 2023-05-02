@@ -45,40 +45,39 @@ class KnightsTour:
         return board
     
     def tour(self, start):
-        visited = {start: None}
+        visited = {}
         path = []
         
         stack = Stack()
-        stack.push(start)
+        stack.push((start, None))
 
         new = 0
-        while stack.size() > 0:
-            current = stack.pop()
+        while (stack.size() > 0) and (len(path) < self._num_spaces):
+            current, current_edge = stack.pop()
+            if current in visited: print('hello :)')
+            visited[current] = current_edge
             path.append(current)
-            print(len(path))
-            #print()
 
             for edge in self._board.incident_edges(current):
                 other = edge.opposite(current)
 
                 if other not in visited:
-                    visited[other] = edge
-                    stack.push(other)
+                    stack.push((other, edge))
                     new += 1
 
             if new == 0:
                 if len(path) < self._num_spaces:
                     path = self._backtrack(visited, path, stack)
             else:
-                new = 0
+                new = 0       
 
         return path
     
     def _backtrack(self, visited, path, stack):
-        print('\nbacktracking!\n')
+        #print('\nbacktracking!\n')
 
-        next = stack.top()
-        parent = visited[next].opposite(next)
+        next, next_edge = stack.top()
+        parent = next_edge.opposite(next)
         parent_idx = path.index(parent)
 
         undo_path = path[parent_idx+1:]

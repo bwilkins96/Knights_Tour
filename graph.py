@@ -89,6 +89,12 @@ class Graph:
         for e in edges[vert].values():
             yield e
 
+    def neighbors(self, vert, outgoing=True):
+        edges = self._outgoing if outgoing else self._incoming
+
+        for v in edges[vert].keys():
+            yield v
+
     def insert_vertex(self, ele):
         """Sets up, inserts, and returns a Vertex"""
         vert = self.Vertex(ele)
