@@ -90,13 +90,33 @@ class KnightsTour:
     
     def _tour_done(self, path):
         return len(path) == self._num_spaces
+    
+    def _heuristic(self, vert, visited):
+        # Warnsdorff’s algorithm
+
+        result = []
+        for neighbor in self._board.neighbors(vert):
+            if neighbor not in visited:
+                
+                connects = 0
+                for other in self._board.neighbors(neighbor):
+                    if other not in visited:
+                        connects += 1
+
+                result.append((neighbor, connects))
+        
+        result.sort(key=self._sort_helper)
+        return [ i[0] for i in result ]
+
+    def _sort_helper(self, tup):
+        return tup[1]
 
     def tour_alt(self, current, path=[], visited=set()):
         visited.add(current)
         path.append(current)
 
         if len(path) < self._num_spaces:
-            neighbors = list(self._board.neighbors(current))
+            neighbors = self._heuristic(current, visited)
             i = 0
 
             while i < len(neighbors) and not self._tour_done(path):
