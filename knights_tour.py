@@ -6,6 +6,7 @@
 
 from graph import Graph
 from stack import Stack
+from time import time
 
 class KnightsTour:
     def __init__(self, dimensions=(8,8)):
@@ -87,35 +88,49 @@ class KnightsTour:
         new_path = path[:parent_idx+1]
         return new_path
     
+    def _tour_done(self, path):
+        return len(path) == self._num_spaces
+
     def tour_alt(self, current, path=[], visited=set()):
         visited.add(current)
         path.append(current)
 
         if len(path) < self._num_spaces:
             neighbors = list(self._board.neighbors(current))
-            done = False
             i = 0
 
-            while i < len(neighbors) and not done:
+            while i < len(neighbors) and not self._tour_done(path):
                 vert = neighbors[i]
                 if vert not in visited:
                     done = self.tour_alt(vert, path, visited)
                 
                 i += 1
 
-            if not done:
+            if not self._tour_done(path):
                 path.pop()
                 visited.remove(current) 
-        else:
-            done = True
         
-        return done
+        return path
     
 if __name__ == '__main__':
-    tour = KnightsTour()
-    start = tour.get_position((1,1))
+    test = KnightsTour()
+    start = test.get_position((1,1))
     #tour = tour.tour(start)
     #print(tour)
     #print(len(tour))
 
-    print(tour.tour_alt(start))
+    s = time()
+    tour = test.tour_alt(start)
+    e = time()
+
+    print('Finished in', e-s, 'seconds')
+    print('\n', tour)
+    print(len(tour), '\n')
+
+    for vert in tour:
+        if tour.count(vert) > 1:
+            print('Count greater than 1!')
+
+    for i in range(len(tour)-1):
+        if not test.valid_move(tour[i].element(), tour[i+1].element()):
+            print('invalid move!')
