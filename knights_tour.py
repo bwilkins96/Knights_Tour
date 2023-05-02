@@ -5,7 +5,6 @@
 # Knight's tour
 
 from graph import Graph
-from stack import Stack
 from time import time
 
 class KnightsTour:
@@ -44,49 +43,6 @@ class KnightsTour:
                     board.insert_edge(position, other)
 
         return board
-    
-    def tour(self, start):
-        visited = {}
-        path = []
-        
-        stack = Stack()
-        stack.push((start, None))
-
-        new = 0
-        while (stack.size() > 0) and (len(path) < self._num_spaces):
-            current, current_edge = stack.pop()
-            if current in visited: print('hello :)')
-            visited[current] = current_edge
-            path.append(current)
-
-            for edge in self._board.incident_edges(current):
-                other = edge.opposite(current)
-
-                if other not in visited:
-                    stack.push((other, edge))
-                    new += 1
-
-            if new == 0:
-                if len(path) < self._num_spaces:
-                    path = self._backtrack(visited, path, stack)
-            else:
-                new = 0       
-
-        return path
-    
-    def _backtrack(self, visited, path, stack):
-        #print('\nbacktracking!\n')
-
-        next, next_edge = stack.top()
-        parent = next_edge.opposite(next)
-        parent_idx = path.index(parent)
-
-        undo_path = path[parent_idx+1:]
-        for vert in undo_path:
-            del visited[vert]
-
-        new_path = path[:parent_idx+1]
-        return new_path
     
     def _tour_done(self, path):
         return len(path) == self._num_spaces
@@ -155,25 +111,3 @@ class KnightsTour:
 if __name__ == '__main__':
     test = KnightsTour()
     test.execute((1,1))
-
-    # start = test.get_position((1,1))
-    # #tour = tour.tour(start)
-    # #print(tour)
-    # #print(len(tour))
-
-    # # s = time()
-    # tour = test.tour_alt(start)
-    # test.print_tour(tour)
-    # e = time()
-
-    # print('Finished in', e-s, 'seconds')
-    # print('\n', tour)
-    # print(len(tour), '\n')
-
-    # for vert in tour:
-    #     if tour.count(vert) > 1:
-    #         print('Count greater than 1!')
-
-    # for i in range(len(tour)-1):
-    #     if not test.valid_move(tour[i].element(), tour[i+1].element()):
-    #         print('invalid move!')
