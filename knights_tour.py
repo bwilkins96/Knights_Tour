@@ -4,8 +4,9 @@
 
 # Knight's tour
 
-from graph import Graph
 from time import time
+from sys import setrecursionlimit
+from graph import Graph
 
 class KnightsTour:
     def __init__(self, dimensions=(8,8)):
@@ -67,7 +68,7 @@ class KnightsTour:
     def _sort_helper(self, tup):
         return tup[1]
 
-    def tour(self, current, path=[], visited=set()):
+    def _tour(self, current, path, visited):
         visited.add(current)
         path.append(current)
 
@@ -78,7 +79,7 @@ class KnightsTour:
             while i < len(neighbors) and not self._tour_done(path):
                 vert = neighbors[i]
                 if vert not in visited:
-                    self.tour(vert, path, visited)
+                    self._tour(vert, path, visited)
                 
                 i += 1
 
@@ -87,6 +88,9 @@ class KnightsTour:
                 visited.remove(current) 
         
         return path
+    
+    def tour(self, start):
+        return self._tour(start, [], set())
     
     def print_tour(self, path):
         result_board = []
@@ -113,24 +117,31 @@ class KnightsTour:
         print()
         self.print_tour(tour_path)
         print('\ncompleted in', e-s, 'seconds')
+        return tour_path
+    
+    def test(self, path):
+        for i in range(len(path)-1):
+            if not self.valid_move(path[i].element(), path[i+1].element()):
+                print('Invalid move!')
+    
+        for vert in path:
+            if path.count(vert) > 1:
+                print('More than 1!')
+
+        if len(path) != self._num_spaces:
+            print('Invalid length of', f'{len(path)}!', 'Expected:', self._num_spaces)
     
 if __name__ == '__main__':
+    setrecursionlimit(10000)
+   
     test = KnightsTour()
-    test.execute((1,1))
+    path = test.execute((1,1))
+    test.test(path)
 
-    # s = time()
-    # path = test.tour(test.get_position((1,1)))
-    # e = time()
-
-    # print('\ncompleted in', e-s, 'seconds')
-
-    # for i in range(len(path)-1):
-    #     if not test.valid_move(path[i].element(), path[i+1].element()):
-    #         print('invalid move!')
+    test2 = KnightsTour((16,16))
+    path2 = test2.execute((1,1))
+    test2.test(path2)
     
-    # for vert in path:
-    #     if path.count(vert) > 1:
-    #         print('More than 1!')
-
-    # if len(path) != test._num_spaces:
-    #     print(len(path))
+    test3 = KnightsTour((32,32))
+    path3 = test3.execute((1,1))
+    test3.test(path3)
