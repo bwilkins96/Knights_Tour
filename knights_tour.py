@@ -5,7 +5,6 @@
 # Knight's tour
 
 from time import time
-from sys import setrecursionlimit
 from graph import Graph
 
 class KnightsTour:
@@ -144,16 +143,14 @@ class KnightsTour:
             print('Invalid length of', f'{len(path)}!', 'Expected:', self._num_spaces)
     
 if __name__ == '__main__':
-    setrecursionlimit(10000)
-   
-    test = KnightsTour()
+    test = KnightsTour((5,5))
     path = test.execute((1,1))
     test.test(path)
 
-    test2 = KnightsTour((16,16))
+    test2 = KnightsTour()
     path2 = test2.execute((1,1))
     test2.test(path2)
     
-    # test3 = KnightsTour((32,32))
-    # path3 = test3.execute((1,1))
-    # test3.test(path3)
+    test3 = KnightsTour((16,16))
+    path3 = test3.execute((1,1))
+    test3.test(path3)
