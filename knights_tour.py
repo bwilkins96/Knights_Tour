@@ -92,6 +92,12 @@ class KnightsTour:
     def tour(self, start):
         return self._tour(start, [], set())
     
+    def _print_row(self, row, max_len):
+        print('|', end='')
+        for num in row:
+            print(f'{num: {max_len+1}}', '|', end='')
+        print()
+
     def print_tour(self, path):
         result_board = []
         for i in range(self._dimensions[0]):
@@ -104,8 +110,14 @@ class KnightsTour:
             result_board[ele[0]-1][ele[1]-1] = count
             count += 1
 
+        max_num_len = len(str(self._num_spaces))
+        divider = '-' * ((max_num_len + 3) * self._dimensions[1] + 1)
+
+        print(divider)  
         for i in range(len(result_board)-1, -1, -1):
-            print(result_board[i])
+           self._print_row(result_board[i], max_num_len)
+           print(divider)
+        
 
     def execute(self, coords):
         start = self.get_position(coords)
@@ -142,6 +154,6 @@ if __name__ == '__main__':
     path2 = test2.execute((1,1))
     test2.test(path2)
     
-    test3 = KnightsTour((32,32))
-    path3 = test3.execute((1,1))
-    test3.test(path3)
+    # test3 = KnightsTour((32,32))
+    # path3 = test3.execute((1,1))
+    # test3.test(path3)
