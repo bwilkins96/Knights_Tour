@@ -3,6 +3,9 @@
 # Benjamin Wilkins
 
 # Knight's tour class and solution
+# --------------------------------
+# A knight's tour consists of a knight making moves on a board so that
+# every space on the board is visited one time
 
 from graph import Graph
 
