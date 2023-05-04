@@ -84,10 +84,12 @@ class Graph:
         return len(edges[vert])
     
     def incident_edges(self, vert, outgoing=True):
+        """Returns edges incident to vert"""
         edges = self._outgoing if outgoing else self._incoming
         return edges[vert].values()
 
     def neighbors(self, vert, outgoing=True):
+        """Returns neighboring vertices of vert"""
         edges = self._outgoing if outgoing else self._incoming
         return edges[vert].keys()
 
@@ -141,6 +143,10 @@ class Graph:
                 self._DFS(other_vert, visited) 
 
     def DFS(self, vert):
+        """
+        Performs a depth-first search and returns a data dictionary 
+        with information about edge connections
+        """
         visited = {vert: None}
         self._DFS(vert, visited)
         return visited
@@ -171,7 +177,6 @@ class Graph:
         shortest = self.get_path(origin, dest, visited)
         return shortest
     
-
 if __name__ == '__main__':
     test = Graph()
 
