@@ -4,7 +4,6 @@
 
 # Knight's tour
 
-from time import time
 from graph import Graph
 
 class KnightsTour:
@@ -91,6 +90,20 @@ class KnightsTour:
     def tour(self, start):
         return self._tour(start, [], set())
     
+    def test_tour(self, path):
+        if len(path) != self._num_spaces:
+            return False
+        
+        for i in range(len(path)-1):
+            if not self.valid_move(path[i].element(), path[i+1].element()):
+                return False
+    
+        for vert in path:
+            if path.count(vert) > 1:
+                return False
+        
+        return True
+    
     def _print_row(self, row, max_len):
         print('|', end='')
         for num in row:
@@ -112,6 +125,8 @@ class KnightsTour:
         max_num_len = len(str(self._num_spaces))
         divider = '-' * ((max_num_len + 3) * self._dimensions[1] + 1)
 
+        header_str = "Knight's tour on {}x{} board starting from {}"
+        print(header_str.format(self._dimensions[0], self._dimensions[1], path[0].element()))
         print(divider)  
         for i in range(len(result_board)-1, -1, -1):
            self._print_row(result_board[i], max_num_len)
@@ -120,37 +135,27 @@ class KnightsTour:
 
     def execute(self, coords):
         start = self.get_position(coords)
-        
-        s = time()
         tour_path = self.tour(start)
-        e = time()
 
         print()
-        self.print_tour(tour_path)
-        print('\ncompleted in', e-s, 'seconds')
-        return tour_path
-    
-    def test(self, path):
-        for i in range(len(path)-1):
-            if not self.valid_move(path[i].element(), path[i+1].element()):
-                print('Invalid move!')
-    
-        for vert in path:
-            if path.count(vert) > 1:
-                print('More than 1!')
+        if self.test_tour(tour_path):
+            self.print_tour(tour_path)
+        else:
+            print(f'Tour not possible on {self._dimensions[0]}x{self._dimensions[1]} board from {coords}')
+        print()
 
-        if len(path) != self._num_spaces:
-            print('Invalid length of', f'{len(path)}!', 'Expected:', self._num_spaces)
+        return tour_path
     
 if __name__ == '__main__':
     test = KnightsTour((5,5))
     path = test.execute((1,1))
-    test.test(path)
 
     test2 = KnightsTour()
     path2 = test2.execute((1,1))
-    test2.test(path2)
+    path2b = test2.execute((4,5))
     
     test3 = KnightsTour((16,16))
-    path3 = test3.execute((1,1))
-    test3.test(path3)
+    path3 = test3.execute((1,12))
+
+    test4 = KnightsTour((4,4))
+    path4 = test4.execute((1,1))      # Should not be possible
